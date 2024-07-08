@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import AddPost from "./addPost";
 import { useSession } from "next-auth/react";
-import Loading from "./loading";
-import Post from "./post";
+import Post from "../molucules/Post";
+import PostFormContainer from "@/components/container/molucules/PostFormContainer";
 
 export default function Timeline() {
   const [posts, setPosts] = useState([]);
@@ -67,30 +66,13 @@ export default function Timeline() {
     }
   };
 
-  const onDelete = async (postid: number) => {
-    const res = await fetch(`/api/post/${postid}`, { method: "DELETE" });
-    if (!res.ok) {
-      throw new Error("Failed to delete post");
-    }
-    await fetchPosts();
-  };
-
-  if (loading) {
-    return <Loading />;
-  }
-
   return (
     <>
-      <AddPost addPost={addPost} />
+      <PostFormContainer addPost={addPost} />
       <div className="mt-4">
         {posts.map((post: any) => (
           <div key={post.id} className="mb-4">
-            <Post
-              username={post.username}
-              postid={post.id}
-              content={post.content}
-              onDelete={onDelete}
-            />
+            <Post post={post} loading={loading} fetchPosts={fetchPosts} />
           </div>
         ))}
       </div>

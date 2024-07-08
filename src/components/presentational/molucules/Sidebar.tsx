@@ -1,7 +1,7 @@
 import { Home, LogOut, PencilLine, Search, UserRound } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { auth, signOut } from "@/auth";
+import Button from "../atoms/Button";
 
 export default async function Sidebar() {
   const session = await auth();

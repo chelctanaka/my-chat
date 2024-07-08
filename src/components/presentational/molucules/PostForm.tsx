@@ -1,31 +1,16 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import { Button } from "../ui/button";
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormControl,
-  FormMessage,
-} from "../ui/form";
-import { Textarea } from "../ui/textarea";
+import { Form, FormField, FormItem, FormControl } from "../../ui/form";
+import Button from "../atoms/Button";
+import Textarea from "../atoms/Textarea";
 
-export default function AddPost({ addPost }: any) {
-  // const [isEmpty, setIsEmpty] = useState(true);
-  const form = useForm({
-    defaultValues: {
-      content: "",
-    },
-  });
+interface PostFormProps {
+  form: any;
+  content: any;
+  onSubmit: (data: any) => void;
+}
 
-  // テキストエリアの値を監視
-  const content = form.watch("content");
-
-  const onSubmit = async ({ content }: any) => {
-    await addPost({ content });
-    form.reset();
-  };
+export default function PostForm({ form, content, onSubmit }: PostFormProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -38,10 +23,9 @@ export default function AddPost({ addPost }: any) {
                 <Textarea
                   placeholder="what is happening?!"
                   className="resize-none"
-                  {...field}
+                  field={field}
                 />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />

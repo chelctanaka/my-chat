@@ -1,10 +1,10 @@
 import { SessionProvider } from "next-auth/react";
-import Profile from "./profile";
+import ProfileContainer from "@/components/container/organisms/ProfileContainer";
 
 export default function Page() {
   return (
     <SessionProvider>
-      <Profile />
+      <ProfileContainer />
     </SessionProvider>
   );
 }

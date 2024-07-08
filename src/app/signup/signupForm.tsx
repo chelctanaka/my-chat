@@ -1,11 +1,11 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useFormState } from "react-dom";
 import { Label } from "@/components/ui/label";
 import { signup } from "@/lib/action";
 import { useState } from "react";
+import Button from "@/components/presentational/atoms/Button";
 
 export default function SignupForm() {
   // フォームの状態を管理するためのフック
@@ -57,7 +57,11 @@ export default function SignupForm() {
           <p className="text-sm text-red-500">{passwordError}</p>
         )}
       </div>
-      <Button type="submit" disabled={isPending || passwordError !== ""}>
+      <Button
+        type="submit"
+        disabled={isPending || passwordError !== ""}
+        variant="default"
+      >
         {isPending ? "登録中..." : "登録"}
       </Button>
       {errorMessage && (

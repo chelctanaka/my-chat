@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Sidebar from "@/components/my/sidebar";
-import { Input } from "@/components/ui/input";
+import Templates from "@/components/presentational/templates/Template";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,17 +15,7 @@ export default function RootLayout({
   return (
     <html lang="ja" className="overflow-y-scroll">
       <body>
-        <div className="grid grid-cols-3">
-          <header className="h-screen sticky top-0 bg-gray-100 p-5 flex justify-end z-10">
-            <Sidebar />
-          </header>
-          <main className="p-5">{children}</main>
-          <div className="h-screen sticky top-0 bg-gray-100 p-5 z-10">
-            <div className="w-1/2">
-              <Input placeholder="Search" />
-            </div>
-          </div>
-        </div>
+        <Templates>{children}</Templates>
       </body>
     </html>
   );

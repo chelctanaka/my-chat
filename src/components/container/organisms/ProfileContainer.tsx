@@ -1,28 +1,18 @@
 "use client";
 
-import Loading from "@/components/my/loading";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/lib/supabase";
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useForm } from "react-hook-form"; // useFormをインポート
+import Profile from "@/components/presentational/organisms/Profile";
 
-export default function Profile() {
+// コンポーネント化できる
+export default function ProfileContainer() {
   const { data: session, status } = useSession();
   const username = session?.user?.username;
 
-  const { register, handleSubmit, setValue } = useForm(); // useFormのフックを使用
+  const form = useForm(); // useFormのフックを使用
   const [avatar, setAvatar] = useState("");
   const [bio, setBio] = useState("");
   const [isEditing, setIsEditing] = useState(false);
@@ -48,7 +38,7 @@ export default function Profile() {
     if (username) {
       fetchBio();
     }
-  }, [username, setValue]);
+  }, [username, form.setValue]);
 
   const changeAvatar = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -101,68 +91,17 @@ export default function Profile() {
     setIsEditing(false);
   };
 
-  if (status === "loading") {
-    return <Loading />;
-  }
-
   return (
-    <Card className="w-[350px] mx-auto">
-      <form onSubmit={handleSubmit(saveBio)}>
-        <CardHeader>
-          <div className="flex items-center">
-            <Avatar className="mr-2">
-              <AvatarImage src={avatar} alt="@shadcn" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-            {isEditing && (
-              <Input
-                id="image"
-                name="image"
-                type="file"
-                onChange={changeAvatar}
-              />
-            )}
-          </div>
-          <CardTitle>{username}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {isEditing ? (
-            <Textarea
-              {...register("bio")}
-              className="w-full h-24 p-2 border rounded resize-none text-base"
-            />
-          ) : (
-            <p className="w-full h-24 p-2 border rounded text-base">{bio}</p>
-          )}
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          {isEditing ? (
-            <Button type="submit">Save</Button>
-          ) : (
-            <Button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                setIsEditing(true);
-              }}
-            >
-              Edit profile
-            </Button>
-          )}
-          {isEditing && (
-            <Button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                setIsEditing(false);
-              }}
-              className="ml-2"
-            >
-              Cancel
-            </Button>
-          )}
-        </CardFooter>
-      </form>
-    </Card>
+    <Profile
+      form={form}
+      avatar={avatar}
+      username={username}
+      bio={bio}
+      isEditing={isEditing}
+      setIsEditing={setIsEditing}
+      saveBio={saveBio}
+      changeAvatar={changeAvatar}
+      status={status}
+    ></Profile>
   );
 }
