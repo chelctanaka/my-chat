@@ -1,5 +1,6 @@
 "use client";
 
+import { useBoundStore } from "@/stores/useBoundStore";
 import { create } from "zustand";
 
 const useStore = create((set) => ({
@@ -31,11 +32,21 @@ function Controls() {
   return <button onClick={increasePopulation}>one up</button>;
 }
 
-export default function Explore() {
+function App() {
+  const bears = useBoundStore((state) => state.bears);
+  const fishes = useBoundStore((state) => state.fishes);
+  const addBear = useBoundStore((state) => state.addBear);
+  const eatFish = useBoundStore((state) => state.eatFish);
   return (
-    <>
-      <BearCounter />
-      <Controls />
-    </>
+    <div>
+      <h2>Number of bears: {bears}</h2>
+      <h2>Number of fishes: {fishes}</h2>
+      <button onClick={() => addBear()}>Add a bear</button>
+      <button onClick={() => eatFish()}>Eat a fish</button>
+    </div>
   );
+}
+
+export default function Explore() {
+  return <App />;
 }
